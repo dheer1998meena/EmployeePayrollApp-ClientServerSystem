@@ -1,5 +1,3 @@
-
-
 //making salary output dynamic
 const salary= document.querySelector('#salary');
 const output= document.querySelector('.salary-output');
@@ -37,7 +35,6 @@ var year= document.querySelector('#year');
 var month= document.querySelector('#month');
 var day=document.querySelector('#day');
 let currentDate= new Date();
-
 
 
 year.addEventListener('input',checkDate);
