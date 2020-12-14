@@ -22,8 +22,7 @@ window.addEventListener('DOMContentLoaded',(event)=>{
             return;
         }
         try{
-            //passing name values in employee payroll data class object and name property and checing if exception is thrown
-            (new EmployeePayrollData()).name=name.value;
+            checkName(name.value);
             textError.textContent="";
         }
         catch(e)
@@ -62,7 +61,7 @@ window.addEventListener('DOMContentLoaded',(event)=>{
         let dates= getInputValueById("#day")+" "+getInputValueById("#month")+" "+getInputValueById("#year");
         //dates is parsed to date and passed to object of employee payroll data class - start date
         dates=new Date(Date.parse(dates));
-        (new EmployeePayrollData()).startDate=dates;
+        checkStartDate(dates);
         //if condition is not satisfied, then error is thrown and catched by try-catch block
         dateError.textContent="";
     }
@@ -70,7 +69,7 @@ window.addEventListener('DOMContentLoaded',(event)=>{
     {
         dateError.textContent=e;
     }
-
+    document.querySelector('#cancelButton').href= site_properties.home_page;
 }
 
 
@@ -97,13 +96,22 @@ const save=(event)=>{
     {
         return;
     }
-    //refactoring the code to populate employee payroll oject defined globally and filling values in employee payroll object instead of
-    //creating the object of employee payroll seperately in create employee payroll 
   
 }
 //setting employee payroll objects with data entered in payroll form
 const setEmployeePayrollObject = () => {
+    if(!isUpdate && site_properties.use_local_storage.match("true")){
+        employeePayrollObj.id= createNewEmployeeId();
+    }
+    try{
     employeePayrollObj._name = getInputValueById('#name');
+    checkName(employeePayrollObj._name);
+    setTextValue(".name-error","");
+    }
+    catch(e){
+        setTextValue(".name-error",e)
+        throw(e);
+    }
     employeePayrollObj._profilePic = getSelectedValues('[name=profile]').pop();
     employeePayrollObj._gender = getSelectedValues('[name=gender]').pop();
     employeePayrollObj._department = getSelectedValues('[name=department]');
@@ -111,7 +119,15 @@ const setEmployeePayrollObject = () => {
     employeePayrollObj._note = getInputValueById('#notes');
     let date = getInputValueById('#day')+" "+getInputValueById('#month')+" "+
                getInputValueById('#year') ;
+    try{
+    checkStartDate(employeePayrollObj.date)
     employeePayrollObj._startDate = date;
+    }
+    catch(e)
+    {
+        setTextValue(".date-error",e);
+        throw e;
+    }
 }
 //creating and updating storage
 function createAndUpdateStorage()
@@ -123,71 +139,35 @@ function createAndUpdateStorage()
     {
         //checking if list obtained from local storage have emp payroll object to be added id already
         //if id is already there, then we are udpdating data, else adding new item into data
-        let empPayrollData= employeePayrollList.find(empData=>empData._id==employeePayrollObj._id)
+        let empPayrollData= employeePayrollList.find(empData=>empData.id==employeePayrollObj.id)
         //if empPayrollData is not defined, then id is not present initially
         if(!empPayrollData)
         {
             //pushing the employee payroll object from create employee payroll data to array
             //directly employee payroll object can not be pushed as it is json object created to read data from form, but it needs to be validated
             //using employeepayrolldata class, hence employeepayrolldata class object is added
-            employeePayrollList.push(createEmployeePayrollData());
+            employeePayrollList.push(employeePayrollObj);
 
         }
         //else element with id is there in list and it needs to be updated
         else
         {
             //finding out the index for particular employee id 
-            const index= employeePayrollList.map(empData=>empData._id).indexOf(empPayrollData._id);
+            const index= employeePayrollList.map(empData=>empData.id).indexOf(empPayrollData.id);
             //after finding out index, element is deleted and new object is added with same employee id
-            employeePayrollList.splice(index,1,createEmployeePayrollData(empPayrollData._id));
+            employeePayrollList.splice(index,1,employeePayrollObj);
         }
     }
     //for 1st element, creating employee payroll data object, adding id to it, changing it to array and assigning it to employee payroll list
     else
     {
-        employeePayrollList=[createEmployeePayrollData()]
+        employeePayrollList=[employeePayrollObj]
     }
     //adding employeepayroll list to local storage again, data is added into local storage and page will move to home page, after submit
     //json file is converted to string to add into local storage
     localStorage.setItem("EmployeePayrollList",JSON.stringify(employeePayrollList));   
 }
-//creating employee payroll data
-//id is passed from update method, where id was already there
-const createEmployeePayrollData = (id) => {
-    //creating object of employee payroll data
-    let employeePayrollData = new EmployeePayrollData();
-    //if id is not defined, calling method for creating new employee id using local storage
-    //id from create new employee id is assigned to employee payroll data, id property.
-    if (!id) employeePayrollData.id = createNewEmployeeId();
-    //else id is assigned to property of employee payroll data object
-    else employeePayrollData.id = id;
-    //calling set employee payroll data method where values from json employee payroll object are assigned to employee payroll data object
-    setEmployeePayrollData(employeePayrollData);
-    return employeePayrollData;
-}
-//method to add data to properties of employee payroll data object, when data is added, it is validated for name and date
-const setEmployeePayrollData = (employeePayrollData) => {
-    try {
-      employeePayrollData.name = employeePayrollObj._name;
-    } catch (e) {
-      setTextValue('.name-error', e);
-      throw e;
-    }
-    employeePayrollData.profilePic = employeePayrollObj._profilePic;
-    employeePayrollData.gender = employeePayrollObj._gender;
-    employeePayrollData.department = employeePayrollObj._department;
-    employeePayrollData.salary = employeePayrollObj._salary;
-    employeePayrollData.note = employeePayrollObj._note;
-    try {
-        employeePayrollData.startDate = 
-            new Date(Date.parse(employeePayrollObj._startDate));
-    } catch (e) {
-        setTextValue('.date-error', e);
-        throw e;
-    }
-    //displays of all the data to be added in local storage
-    alert(employeePayrollData.toString());
-}
+
 //creating new employee id for adding of new data
 //id are to be created seperately for each object
 const createNewEmployeeId = () => {

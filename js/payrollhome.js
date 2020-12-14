@@ -46,8 +46,8 @@ const createInnerHtml=()=>
             </td>
             <td>${empPayrollData._salary}</td>
             <td>${stringifyDate(empPayrollData._startDate)}</td>
-            <td><img id="${empPayrollData._id}" onclick= "remove(this)" alt="delete" src="../assets/icons/delete-black-18dp.svg">
-            <img id="${empPayrollData._id}" onclick= "update(this)" alt="edit" src="../assets/icons/create-black-18dp.svg"></td>
+            <td><img id="${empPayrollData.id}" onclick= "remove(this)" alt="delete" src="../assets/icons/delete-black-18dp.svg">
+            <img id="${empPayrollData.id}" onclick= "update(this)" alt="edit" src="../assets/icons/create-black-18dp.svg"></td>
         </tr>`;
     }
     //displaying the data using innerHTML
@@ -59,7 +59,7 @@ const createInnerHtml=()=>
 const createEmployeePayrollJSON = () => {
     let empPayrollListLocal = [
       {       
-        _name: 'Harish',
+        _name: 'Prerna',
         _gender: 'male',
         _department: [
             'Engineering',
@@ -68,7 +68,7 @@ const createEmployeePayrollJSON = () => {
         _salary: '500000',
         _startDate: '29 Oct 2019',
         _note: '',
-        _id: new Date().getTime(),
+        id: new Date().getTime(),
         _profilePic: '../assets/profile-images/Ellipse -2.png'
       },
       {
@@ -80,7 +80,7 @@ const createEmployeePayrollJSON = () => {
         _salary: '400000',
         _startDate: '29 Oct 2019',
         _note: '',
-        _id: new Date().getTime() + 1,
+        id: new Date().getTime() + 1,
         _profilePic: '../assets/profile-images/Ellipse -1.png'
       }
     ];
@@ -103,12 +103,12 @@ const createEmployeePayrollJSON = () => {
   //Adding function to delete elements when click on delete icon in actions
   const remove= (node)=>{
       //empPayrollList is array of data which is instatiated once all the content of webpage gets loaded
-      let empPayrollData= empPayrollList.find(empData=>empData._id=node.id);
+      let empPayrollData= empPayrollList.find(empData=>empData.id=node.id);
       //after finding out, if element exist or node with given id, index of particular id is find out
       if(!empPayrollData) return;
       //for finding out index, emppayroll list is converted to array only of id by mapping and then
       //emppayrolldata id is compared to get index
-      const index= empPayrollList.map(empData=>empData._id).indexOf(empPayrollData.id);
+      const index= empPayrollList.map(empData=>empData.id).indexOf(empPayrollData.id);
       //using splice to remove element from array
       empPayrollList.splice(index,1);
       //updating the data into local storage
@@ -123,7 +123,7 @@ const createEmployeePayrollJSON = () => {
   //update method to edit the details of employee payroll
   const update= (node)=>{
       //from the array empPayrollList populated while laoding content of page, employee id to be upadated is find out
-      let empPayrollData= empPayrollList.find(empData=>empData._id== node.id);
+      let empPayrollData= empPayrollList.find(empData=>empData.id== node.id);
       //if emplPayrollData is null, return is applied here and nothing changes
       if(!empPayrollData) return;
       //in order to edit details, employee will be redirected to populated employee payroll form
