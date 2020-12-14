@@ -5,8 +5,6 @@ class EmployeePayrollData
     get name(){ return this._name;}
     set name(name)
     {
-        //console.log("Setting: "+name);
-        //this._name= name;
         //regular expression for name
         let nameRegex= RegExp('^[A-Z]{1}[a-zA-Z ]{2,}$');
         if(nameRegex.test(name))
@@ -14,11 +12,7 @@ class EmployeePayrollData
         else throw 'Name is Incorrect!';
     }
     //geter and setter for id
-    get id(){ return this._id;}
-    set id(id)
-    {
-        this._id=id;
-    }
+    id;
     //getter and setter fr profilepic
     get profilePic() { return this._profilePic; }
     set profilePic(profilePic) 
