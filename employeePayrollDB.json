@@ -18,22 +18,23 @@
       "_name": "Alan Walker",
       "_gender": "male",
       "_department": [
-        "Engineering"
+        "Sales",
+        "Finance"
       ],
-      "_salary": "500000",
-      "_startDate": "29 Oct 2019",
-      "_note": "Professional",
-      "_profilePic": "../assets/profile-images/Ellipse -1.png"
+      "_salary": "443700",
+      "_startDate": "29 October 2020 ",
+      "_note": "Professional singer",
+      "_profilePic": "../assets/profile-images/Ellipse 1.png"
     },
     {
-      "_name": "Marshmallow",
+      "_name": "Amarpa Shashanka Keerthi Kumar",
       "_gender": "female",
       "_department": [
         "Sales"
       ],
       "_salary": "400000",
       "_startDate": "29 Oct 2019",
-      "_note": "Improving",
+      "_note": "",
       "_profilePic": "../assets/profile-images/Ellipse -1.png",
       "id": 3
     }
