@@ -4,22 +4,41 @@ let empPayrollList;
 //creating event listener which will be instatiated once all the content is loaded on webpage
 window.addEventListener('DOMContentLoaded',(event)=>
 {
-    //for adding data into arrray, calling method get Employee payroll data from storage
-    empPayrollList= getEmployeePayrollDataFromStorage();
-    //printing out the count of employees in list or table using emp payroll list length attribute and class name in html.
-    document.querySelector(".emp-count").textContent= empPayrollList.length;
-    //calling method to add data into the table
-    createInnerHtml();
-    //removing item from editEmp, so as to add new item to edit emp for updating items
-    localStorage.removeItem('editEmp');
+    if(site_properties.use_local_storage.match("true"))
+    {
+        getEmployeePayrollDataFromStorage();
+    }
+    else
+        getEmployeePayrollDataFromServer();
 });
 //function defined in form of array functions to get data from local storage
 //in array function, ,condition is checked, if particular key (keys are there in local storage and data is added corresponding to it, here our
 //key is EmployeePayrollList) is there in database, if there all data is read form localstorage through getItem method, else empty array is returned.
 //data is added in local storage in form of strings. json.parse converts local storage in object of Employeepayroll, in the form it was added.
 const getEmployeePayrollDataFromStorage= ()=>{
-    return localStorage.getItem('EmployeePayrollList')?JSON.parse(localStorage.getItem('EmployeePayrollList')):[];
+    empPayrollList= localStorage.getItem('EmployeePayrollList')?JSON.parse(localStorage.getItem('EmployeePayrollList')):[];
+    processEmployeePayrollDataResponse();
 }
+const processEmployeePayrollDataResponse=()=>{
+    document.querySelector(".emp-count").textContent=empPayrollList.length;
+    createInnerHtml();
+    localStorage.removeItem('editEmp');
+}
+
+const getEmployeePayrollDataFromServer=()=>
+{
+    makeServiceCall("GET",site_properties.server_url,true)
+        .then(responseText=>{
+            empPayrollList= JSON.parse(responseText);
+            processEmployeePayrollDataResponse();
+        })
+        .catch(error=>{
+            console.log("GET Error Status: "+JSON.stringify(error));
+            empPayrollList=[];
+            processEmployeePayrollDataResponse();
+        })
+}
+
 //method to add data into inner html which adds data into the table
 const createInnerHtml=()=>
 {
@@ -59,7 +78,7 @@ const createInnerHtml=()=>
 const createEmployeePayrollJSON = () => {
     let empPayrollListLocal = [
       {       
-        _name: 'Prerna',
+        _name: 'Harish',
         _gender: 'male',
         _department: [
             'Engineering',
