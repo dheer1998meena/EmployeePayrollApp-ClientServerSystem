@@ -1,0 +1,41 @@
+{
+  "EmployeePayrollDB": [
+    {
+      "id": 1,
+      "_name": "Dheer Singh Meena ",
+      "_gender": "male",
+      "_department": [
+        "Engineering",
+        "Finance"
+      ],
+      "_salary": "500000",
+      "_startDate": "29 Oct 2019",
+      "_note": "Great",
+      "_profilePic": "../assets/profile-images/Ellipse -3.png"
+    },
+    {
+      "id": 2,
+      "_name": "Alan Walker",
+      "_gender": "male",
+      "_department": [
+        "Engineering"
+      ],
+      "_salary": "500000",
+      "_startDate": "29 Oct 2019",
+      "_note": "Professional",
+      "_profilePic": "../assets/profile-images/Ellipse -1.png"
+    },
+    {
+      "_name": "Marshmallow",
+      "_gender": "female",
+      "_department": [
+        "Sales"
+      ],
+      "_salary": "400000",
+      "_startDate": "29 Oct 2019",
+      "_note": "Improving",
+      "_profilePic": "../assets/profile-images/Ellipse -1.png",
+      "id": 3
+    }
+  ]
+}
